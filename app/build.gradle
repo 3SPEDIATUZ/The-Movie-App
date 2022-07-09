@@ -31,6 +31,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -60,7 +64,7 @@ dependencies {
     //HttpLoggingInterceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     //Response Handler
-    implemgit statusentation "com.github.skydoves:sandwich:1.2.4"
+    implementation "com.github.skydoves:sandwich:1.2.4"
     //Gson
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //Coil
