@@ -2,6 +2,7 @@ package com.example.themovieapp.data.repository
 
 import com.example.themovieapp.data.api.ApiService
 import com.example.themovieapp.data.model.Movie
+import com.example.themovieapp.data.model.MovieReponse
 import com.example.themovieapp.di.IoDispatcher
 import com.example.themovieapp.utils.Constants
 import com.skydoves.sandwich.ApiResponse
@@ -14,7 +15,7 @@ class MovieRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override suspend fun getMovies(): ApiResponse<List<Movie>> = withContext(ioDispatcher) {
+    override suspend fun getMovies(): ApiResponse<MovieReponse> = withContext(ioDispatcher) {
          apiService.getMovies(Constants.API_KEY)
     }
 }
