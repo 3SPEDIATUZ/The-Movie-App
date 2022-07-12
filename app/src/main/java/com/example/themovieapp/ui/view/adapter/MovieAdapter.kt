@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.themovieapp.data.model.MovieModel
 import com.example.themovieapp.databinding.ItemMainBinding
-
 import android.widget.ImageView
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.transform.BlurTransformation
 import com.example.themovieapp.utils.Constants.IMAGE_URL
-
 
 class MovieAdapter(
     private val recyclerViewHome: RecyclerViewHomeClickListener,
