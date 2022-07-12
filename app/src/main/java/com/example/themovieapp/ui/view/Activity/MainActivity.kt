@@ -1,17 +1,15 @@
-package com.example.themovieapp.iu.view.Activity
+package com.example.themovieapp.ui.view.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.themovieapp.data.model.Movie
 import com.example.themovieapp.databinding.ActivityMainBinding
-import com.example.themovieapp.iu.view.adapter.MainAdapter
-import com.example.themovieapp.iu.viewModel.MainViewModel
+import com.example.themovieapp.ui.view.adapter.MainAdapter
+import com.example.themovieapp.ui.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {

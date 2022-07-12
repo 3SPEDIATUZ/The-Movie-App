@@ -1,7 +1,6 @@
-package com.example.themovieapp.iu.view.adapter
+package com.example.themovieapp.ui.view.adapter
 
 import android.content.Context
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

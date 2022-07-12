@@ -1,10 +1,9 @@
-package com.example.themovieapp.iu.viewModel
+package com.example.themovieapp.ui.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.themovieapp.data.model.Movie
 import com.example.themovieapp.data.model.MovieReponse
 import com.example.themovieapp.data.repository.MovieRepository
 import com.skydoves.sandwich.onError
