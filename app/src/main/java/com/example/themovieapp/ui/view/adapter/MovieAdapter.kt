@@ -9,15 +9,16 @@ import com.bumptech.glide.Glide
 import com.example.themovieapp.R
 import com.example.themovieapp.data.model.Movie
 import com.example.themovieapp.databinding.ItemMainBinding
+import com.example.themovieapp.utils.Constants.URL_IMG
 
-class MainAdapter(private val onClickListener: OnClickListener) :RecyclerView.Adapter<MainAdapter.MainHolder>() {
+class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.Adapter<MovieAdapter.MainHolder>() {
 
-    private val itemMovie: List<Movie> = ArrayList()
+    private var itemMovie: List<Movie> = ArrayList()
     private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         context = parent.context
-        val view = LayoutInflater.from(context).inflate(R.layout.item_main, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)
         return MainHolder(view)
     }
 
@@ -27,9 +28,14 @@ class MainAdapter(private val onClickListener: OnClickListener) :RecyclerView.Ad
             holder.bind(movie)
             itemMainBinding.textViewTitle.text = movie.title
             Glide.with(context)
-                .load(movie.title)
+                .load("$URL_IMG${movie.poster}")
                 .into(holder.itemMainBinding.imageViewPoster)
         }
+    }
+
+    fun submit(list: List<Movie>){
+        itemMovie = list
+        notifyItemChanged(itemMovie.size-1)
     }
 
     override fun getItemCount(): Int = itemMovie.size
