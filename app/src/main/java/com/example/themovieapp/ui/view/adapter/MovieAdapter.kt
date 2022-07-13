@@ -1,18 +1,20 @@
 package com.example.themovieapp.ui.view.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.themovieapp.data.model.MovieModel
-import com.example.themovieapp.databinding.ItemMainBinding
 import android.widget.ImageView
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.transform.BlurTransformation
+import com.example.themovieapp.R
+import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.utils.Constants.IMAGE_URL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MovieAdapter(
     private val recyclerViewHome: RecyclerViewHomeClickListener,
@@ -25,7 +27,7 @@ class MovieAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
-            ItemMainBinding.inflate(
+            ItemMovieBinding.inflate(
                 LayoutInflater.from(parent.context)
             )
         )
@@ -51,12 +53,12 @@ class MovieAdapter(
 
     override fun getItemCount(): Int = movieModels.size
 
-    fun submitList(itemList: List<MovieModel>) {
+    suspend fun submitList(itemList: List<MovieModel>) = withContext(Dispatchers.Main) {
         movieModels = itemList
-        notifyDataSetChanged()
+        notifyItemChanged(movieModels.size -1)
     }
 
-    class MainViewHolder(private var binding: ItemMainBinding) :
+    class MainViewHolder(private var binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movieModel: MovieModel, context: Context) {
             val imageRequest = ImageRequest.Builder(context)
@@ -70,14 +72,16 @@ class MovieAdapter(
                 .size(1280, 720)
                 .target(
                     onStart = {
-
+                        binding.imageViewPoster.setImageResource(R.drawable.ic_access_time)
                     },
                     onSuccess = { poster ->
+                        binding.progressBar.visibility = View.GONE
                         binding.imageViewPoster.scaleType = ImageView.ScaleType.CENTER_CROP
                         binding.imageViewPoster.setImageDrawable(poster)
                     },
                     onError = {
-                        Log.e("hola", "onError: $it")
+                        binding.progressBar.visibility = View.GONE
+                        binding.imageViewPoster.setImageResource(R.drawable.ic_load_error)
                     }
                 )
                 .build()

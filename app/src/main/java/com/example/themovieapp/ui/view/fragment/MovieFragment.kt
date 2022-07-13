@@ -1,16 +1,19 @@
 package com.example.themovieapp.ui.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.themovieapp.data.model.MovieModel
 import com.example.themovieapp.databinding.FragmentMovieBinding
 import com.example.themovieapp.ui.view.adapter.MovieAdapter
 import com.example.themovieapp.ui.viewModel.MovieViewModel
+import com.hadiyarajesh.flower.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +32,7 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setMainAdapter()
-        movieViewModel.getMovie()
+        movieViewModel.getMovies()
         setObservers()
     }
 
@@ -40,10 +43,23 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     }
 
     private fun setObservers() {
-        movieViewModel.dataMovie.observe(viewLifecycleOwner, { dataMovie ->
-            val data = dataMovie.movieModels
-            movieAdapter.submitList(data)
-        })
+        lifecycleScope.launchWhenCreated {
+            movieViewModel.dataMovie.collect { response ->
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        movieAdapter.submitList(response.data!!.movieModels)
+                        Log.e("Hola", "SUCCESS")
+                    }
+                     Resource.Status.ERROR("Error", 400) -> {
+                         Log.e("Hola", "ERROR")
+                     }
+                    Resource.Status.LOADING -> {
+                        Log.e("Hola", "LOADING")
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     override fun clickOnItem(data: MovieModel, card: View) {}

@@ -1,14 +1,13 @@
 package com.example.themovieapp.data.repository
 
-import com.example.themovieapp.data.database.entity.MovieEntity
 import com.example.themovieapp.data.response.MovieResponse
-import com.example.themovieapp.domain.model.Movie
-import com.skydoves.sandwich.ApiResponse
+import com.hadiyarajesh.flower.ApiResponse
+import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    suspend fun getAllMoviesFromApi(): List<Movie>
-    suspend fun getAllMoviesFromDatabase():List<Movie>
-    suspend fun insertMovies(movies: List<MovieEntity>)
+    fun getAllMoviesFromRetrofit(): Flow<ApiResponse<MovieResponse>>
+    fun getAllMoviesFromRoom(): Flow<MovieResponse>
+    suspend fun insertMovies(movies: MovieResponse)
     suspend fun clearMovies()
 }

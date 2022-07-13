@@ -1,7 +1,7 @@
 package com.example.themovieapp.di
 
 import com.example.themovieapp.data.network.ApiService
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import com.hadiyarajesh.flower.calladpater.FlowCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,7 +44,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
-            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+            .addCallAdapterFactory(FlowCallAdapterFactory.create())
             .client(okHttpClient)
             .build()
     }
