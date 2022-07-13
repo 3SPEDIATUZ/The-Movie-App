@@ -3,9 +3,9 @@ package com.example.themovieapp.ui.view.Framents
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,11 +31,13 @@ class MovieFragment : Fragment(), MovieAdapter.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
-        movieViewModel.getMovie()
-        setMainAdapter()
+        movieViewModel.getMoviePopular()
+        movieViewModel.getMovieTopRated()
+        movieViewModel.getMovieUpcoming()
+        setMovieAdapter()
     }
 
-    private fun setMainAdapter() {
+    private fun setMovieAdapter() {
         movieAdapter = MovieAdapter(this)
         binding.recyclerViewMovie.adapter = movieAdapter
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -43,16 +45,25 @@ class MovieFragment : Fragment(), MovieAdapter.OnClickListener {
         movieAdapter.notifyDataSetChanged()
     }
 
-    private fun setObservers() {
-        movieViewModel.isSuccess.observe(viewLifecycleOwner, { isSuccess ->
-            Log.e("Hola", "Aqui esta: $isSuccess")
+    fun setObservers(){
+        movieViewModel.isSuccessMoviePopular.observe(viewLifecycleOwner, { isSuccess ->
+            Log.e("Hola", "Aqui esta movie popular: $isSuccess")
             movieAdapter.submit(isSuccess.response)
+        })
+        movieViewModel.isSuccessMovieTopRated.observe(viewLifecycleOwner, { isSuccess ->
+            Log.e("Hola2", "Aqui esta movie Top Rated: $isSuccess")
+            movieAdapter.submit(isSuccess.response)
+        })
+        movieViewModel.isSuccessMovieUpcoming.observe(viewLifecycleOwner, { isSucces ->
+            Log.e("Hola3", "Aqui esta movie Upcoming: $isSucces")
+            movieAdapter.submit(isSucces.response)
+        })
+        movieViewModel.error.observe(viewLifecycleOwner,{
+            Log.e("Error","Error en lectura de peliculas")
         })
     }
 
     override fun onClick(movie: Movie) {
 
     }
-
-
 }

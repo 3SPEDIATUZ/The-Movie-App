@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.themovieapp.R
 import com.example.themovieapp.data.model.Movie
-import com.example.themovieapp.databinding.ItemMainBinding
+import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.utils.Constants.URL_IMG
 
 class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.Adapter<MovieAdapter.MainHolder>() {
@@ -26,11 +26,15 @@ class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.A
         val movie = itemMovie[position]
         with(holder) {
             holder.bind(movie)
-            itemMainBinding.textViewTitle.text = movie.title
+
             Glide.with(context)
                 .load("$URL_IMG${movie.poster}")
-                .into(holder.itemMainBinding.imageViewPoster)
+                .into(holder.itemMovieBinding.imagenViewMovie)
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
     }
 
     fun submit(list: List<Movie>){
@@ -42,9 +46,9 @@ class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.A
 
     inner class MainHolder(view: View) :
         RecyclerView.ViewHolder(view) {
-         val itemMainBinding = ItemMainBinding.bind(view)
+         val itemMovieBinding = ItemMovieBinding.bind(view)
         fun bind(movie: Movie) {
-            itemMainBinding.root.setOnClickListener {
+            itemMovieBinding.root.setOnClickListener {
                 onClickListener.onClick(movie)
             }
         }
