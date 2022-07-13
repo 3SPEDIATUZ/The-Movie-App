@@ -18,4 +18,13 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovies(): ApiResponse<MovieReponse> = withContext(ioDispatcher) {
          apiService.getMovies(Constants.API_KEY)
     }
+
+    override suspend fun getMoviesTop(): ApiResponse<MovieReponse> = withContext(ioDispatcher) {
+        apiService.getMoviesTop(Constants.API_KEY)
+    }
+
+    override suspend fun getMoviesUpcoming(): ApiResponse<MovieReponse> = withContext(ioDispatcher) {
+        apiService.getMoviesUpcoming(Constants.API_KEY)
+    }
+
 }

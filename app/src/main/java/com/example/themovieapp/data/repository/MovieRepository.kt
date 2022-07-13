@@ -7,4 +7,8 @@ import com.skydoves.sandwich.ApiResponse
 interface MovieRepository {
 
     suspend fun getMovies(): ApiResponse<MovieReponse>
+
+    suspend fun getMoviesTop(): ApiResponse<MovieReponse>
+
+    suspend fun getMoviesUpcoming(): ApiResponse<MovieReponse>
 }
