@@ -9,12 +9,9 @@ import com.example.themovieapp.data.model.MovieModel
 import android.widget.ImageView
 import coil.imageLoader
 import coil.request.ImageRequest
-import coil.transform.BlurTransformation
 import com.example.themovieapp.R
 import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.utils.Constants.IMAGE_URL
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class MovieAdapter(
     private val recyclerViewHome: RecyclerViewHomeClickListener,
@@ -53,9 +50,9 @@ class MovieAdapter(
 
     override fun getItemCount(): Int = movieModels.size
 
-    suspend fun submitList(itemList: List<MovieModel>) = withContext(Dispatchers.Main) {
+    fun submitList(itemList: List<MovieModel>) {
         movieModels = itemList
-        notifyItemChanged(movieModels.size -1)
+        notifyItemChanged(movieModels.size - 1)
     }
 
     class MainViewHolder(private var binding: ItemMovieBinding) :
@@ -64,11 +61,6 @@ class MovieAdapter(
             val imageRequest = ImageRequest.Builder(context)
                 .data("$IMAGE_URL${movieModel.poster}")
                 .crossfade(true)
-                .transformations(
-                    listOf(
-                        BlurTransformation(context, 25f)
-                    )
-                )
                 .size(1280, 720)
                 .target(
                     onStart = {
