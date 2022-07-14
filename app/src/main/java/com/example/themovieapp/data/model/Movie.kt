@@ -3,6 +3,7 @@ package com.example.themovieapp.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Movie(
+    @SerializedName("backdrop_path") val background: String,
     @SerializedName("id") val identification: Int,
     @SerializedName("original_language") val language: String,
     @SerializedName("original_title") val originalTitle: String,

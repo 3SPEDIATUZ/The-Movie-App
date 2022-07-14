@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.themovieapp.data.model.Movie
 import com.example.themovieapp.databinding.FragmentMovieBinding
-import com.example.themovieapp.ui.view.adapter.MovieAdapter
+import com.example.themovieapp.ui.view.adapters.MovieAdapter
 import com.example.themovieapp.ui.viewModel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

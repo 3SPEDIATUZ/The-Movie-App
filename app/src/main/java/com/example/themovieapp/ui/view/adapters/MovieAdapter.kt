@@ -1,4 +1,4 @@
-package com.example.themovieapp.ui.view.adapter
+package com.example.themovieapp.ui.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -28,7 +28,7 @@ class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.A
             holder.bind(movie)
 
             Glide.with(context)
-                .load("$URL_IMG${movie.poster}")
+                .load("$URL_IMG${movie.poster}").centerCrop()
                 .into(holder.itemMovieBinding.imagenViewMovie)
         }
     }
