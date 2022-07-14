@@ -1,11 +1,10 @@
-package com.example.themovieapp.iu.viewModel
+package com.example.themovieapp.ui.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.themovieapp.data.model.Movie
-import com.example.themovieapp.data.model.MovieReponse
+import com.example.themovieapp.data.model.MovieResponse
 import com.example.themovieapp.data.repository.MovieRepository
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onFailure
@@ -18,13 +17,13 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val movieRepository: MovieRepository) :
     ViewModel() {
     //Encasulamiento
-    private val _isSuccess = MutableLiveData<MovieReponse>()
-    val isSuccess:LiveData<MovieReponse>
+    private val _isSuccess = MutableLiveData<MovieResponse>()
+    val isSuccess:LiveData<MovieResponse>
     get() = _isSuccess
 
     fun getMovie() {
         viewModelScope.launch {
-            movieRepository.getMovies()
+            movieRepository.getMoviesPopular()
                 .onSuccess {
                     //suscribiendonos a liveData
                     _isSuccess.postValue(response.body())
