@@ -1,8 +1,7 @@
 package com.example.themovieapp.utils
 
-sealed class UiState<out T> {
-    object Empty : UiState<Nothing>()
-    object Loading : UiState<Nothing>()
-    data class Success<out T>(val data: T?) : UiState<T>()
-    data class Error(val data: String?) : UiState<Nothing>()
+sealed class UiState<T>() {
+    class Success<T>(val data: T): UiState<T>()
+    class Loading<T>: UiState<T>()
+    class Error<T>(val message: T): UiState<T>()
 }

@@ -43,6 +43,16 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     }
 
     private fun setObservers() {
+        movieViewModel.quoteModel.observe(viewLifecycleOwner, {
+           //movieAdapter.submitList(it)
+            Log.e("hola", "Aqui esta $it")
+        })
+    }
+
+    override fun clickOnItem(data: MovieModel, card: View) {}
+}
+
+/*private fun setObservers() {
         lifecycleScope.launchWhenCreated {
             movieViewModel.dataMovie.collect { response ->
                 when (response.status) {
@@ -60,7 +70,4 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
                 }
             }
         }
-    }
-
-    override fun clickOnItem(data: MovieModel, card: View) {}
-}
+    }*/

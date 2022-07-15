@@ -1,8 +1,14 @@
 package com.example.themovieapp.data.repository
 
 import com.example.themovieapp.data.database.dao.MovieDao
+import com.example.themovieapp.data.database.entity.MovieEntity
+import com.example.themovieapp.data.database.entity.MovieEntityResponse
+import com.example.themovieapp.data.dto.mapper.MovieDTOMapper
+import com.example.themovieapp.data.model.MovieModel
 import com.example.themovieapp.data.network.MovieService
-import com.example.themovieapp.data.response.MovieResponse
+import com.example.themovieapp.data.response.MovieModelResponse
+import com.example.themovieapp.domain.model.Movie
+import com.example.themovieapp.domain.model.toDomain
 import com.example.themovieapp.utils.Constants
 import com.hadiyarajesh.flower.ApiResponse
 import kotlinx.coroutines.flow.Flow
@@ -13,19 +19,24 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao
 ) : MovieRepository {
 
-    override fun getAllMoviesFromRetrofit(): Flow<ApiResponse<MovieResponse>> {
-        return movieService.getMovies(Constants.API_KEY)
+    override suspend fun getAllMoviesFromRetrofit(): List<Movie> {
+       return movieService.getMovies(Constants.API_KEY)
     }
 
-    override fun getAllMoviesFromRoom(): Flow<MovieResponse> {
-        return movieDao.getAllMovies()
+    override suspend fun getAllMoviesFromRoom(): List<Movie> {
+        val response = movieDao.getAllMovies()
+        val movieEntity = response.movieEntity
+        val mapper = MovieDTOMapper()
+       return mapper.mapMovieEntityList(movieEntity)
     }
 
-    override suspend fun insertMovies(movies: MovieResponse) {
-        movieDao.insertAll(movies)
+    override suspend fun insertMovies(movies: MovieEntityResponse) {
+        val response = movies.movieEntity
+        val mapper = MovieDTOMapper()
+        movieDao.insertAll(mapper.mapMovieEntityList(response))
     }
 
-    override suspend fun clearMovies(){
+    override suspend fun clearMovies() {
         movieDao.deleteAllMovies()
     }
 }

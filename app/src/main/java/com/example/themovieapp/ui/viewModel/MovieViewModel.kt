@@ -1,9 +1,11 @@
 package com.example.themovieapp.ui.viewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.themovieapp.data.response.MovieResponse
+import com.example.themovieapp.data.response.MovieModelResponse
 import com.example.themovieapp.domain.MovieUseCase
+import com.example.themovieapp.domain.model.Movie
 import com.hadiyarajesh.flower.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +17,24 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val movieUseCase: MovieUseCase) : ViewModel() {
 
-    private val _dataMovie = MutableStateFlow<Resource<MovieResponse>>(Resource.loading(null))
-    val dataMovie: StateFlow<Resource<MovieResponse>> = _dataMovie
+    val quoteModel = MutableLiveData<Movie>()
+    val isLoading = MutableLiveData<Boolean>()
+
+    fun getMovies() {
+        viewModelScope.launch {
+            isLoading.postValue(true)
+            val result = movieUseCase()
+
+            if (!result.isNullOrEmpty()) {
+                quoteModel.postValue(result[0])
+                isLoading.postValue(false)
+            }
+        }
+    }
+}
+
+/* private val _dataMovie = MutableStateFlow<Resource<MovieModelResponse>>(Resource.loading(null))
+    val dataMovieModel: StateFlow<Resource<MovieModelResponse>> = _dataMovie
 
     fun getMovies() {
         viewModelScope.launch {
@@ -27,5 +45,4 @@ class MovieViewModel @Inject constructor(private val movieUseCase: MovieUseCase)
                     _dataMovie.value = movieResponse
                 }
         }
-    }
-}
+    }*/
