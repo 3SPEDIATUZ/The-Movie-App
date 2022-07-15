@@ -16,7 +16,7 @@ interface ApiService {
     suspend fun getMoviesTop(@Query("api_key") apiKey: String) : ApiResponse<MovieResponse>
 
     //obtendremos las peliculas exclusivas
-    @GET("/3//movie/upcoming")
+    @GET("/3/movie/upcoming")
     suspend fun getMoviesUpcoming (@Query("api_key") apiKey: String) : ApiResponse<MovieResponse>
 
 }

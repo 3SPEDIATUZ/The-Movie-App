@@ -16,32 +16,42 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
     //Encasulamiento
-    private val _isSuccessMoviePopular = MutableLiveData<MovieResponse>()
-    val isSuccessMoviePopular: LiveData<MovieResponse>
-        get() = _isSuccessMoviePopular
+    private val _successMoviePopular = MutableLiveData<MovieResponse>()
+    val successMoviePopular: LiveData<MovieResponse>
+        get() = _successMoviePopular
 
-    private val _isSuccessMovieUpcoming = MutableLiveData<MovieResponse>()
-    val isSuccessMovieUpcoming: LiveData<MovieResponse>
-        get() = _isSuccessMovieUpcoming
+    private val _successMovieUpcoming = MutableLiveData<MovieResponse>()
+    val successMovieUpcoming: LiveData<MovieResponse>
+        get() = _successMovieUpcoming
 
-    private val _isSuccessMovieTopRated = MutableLiveData<MovieResponse>()
-    val isSuccessMovieTopRated: LiveData<MovieResponse>
-        get() = _isSuccessMovieTopRated
+    private val _successMovieTopRated = MutableLiveData<MovieResponse>()
+    val successMovieTopRated: LiveData<MovieResponse>
+        get() = _successMovieTopRated
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String>
         get() = _error
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
+    init {
+        _isLoading.value = true
+    }
 
     //Se suscribe
     fun getMoviePopular() {
         viewModelScope.launch {
             movieRepository.getMoviesPopular()
                 .onSuccess {
-                    _isSuccessMoviePopular.postValue(response.body())
+                    _isLoading.value = false
+                    _successMoviePopular.postValue(response.body())
                 }.onError {
+                    _isLoading.value = false
                     _error.postValue(response.errorBody()?.string())
                 }.onFailure {
-
+                    _isLoading.value = false
                 }
         }
     }
@@ -50,11 +60,13 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
         viewModelScope.launch {
             movieRepository.getMoviesUpcoming()
                 .onSuccess {
-                    _isSuccessMovieUpcoming.postValue(response.body())
+                    _isLoading.value = false
+                    _successMovieUpcoming.postValue(response.body())
                 }.onError {
+                    _isLoading.value = false
                     _error.postValue(response.errorBody()?.string())
                 }.onFailure {
-
+                    _isLoading.value = false
                 }
         }
     }
@@ -63,11 +75,13 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
         viewModelScope.launch {
             movieRepository.getMoviesTop()
                 .onSuccess {
-                    _isSuccessMovieTopRated.postValue(response.body())
+                    _isLoading.value = false
+                    _successMovieTopRated.postValue(response.body())
                 }.onError {
+                    _isLoading.value = false
                     _error.postValue(response.errorBody()?.string())
                 }.onFailure {
-
+                    _isLoading.value = false
                 }
         }
     }
