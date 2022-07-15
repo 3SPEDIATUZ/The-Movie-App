@@ -1,6 +1,7 @@
 package com.example.themovieapp.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class Movie(
     @SerializedName("backdrop_path") val background: String,
@@ -14,6 +15,8 @@ data class Movie(
     @SerializedName("title") val title: String,
     @SerializedName("video")  val video: Boolean,
     @SerializedName("vote_average") val voteAverage: Float,
-    @SerializedName("vote_count") val voteCount: Int
+    @SerializedName("vote_count") val voteCount: Int,
+    @SerializedName("adult") val adult: Boolean
+
 )
 

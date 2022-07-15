@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ConcatAdapter
+import com.example.themovieapp.R
 import com.example.themovieapp.data.model.Movie
 import com.example.themovieapp.databinding.FragmentMovieBinding
 import com.example.themovieapp.ui.view.adapters.MovieAdapter
@@ -39,6 +42,7 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
         super.onViewCreated(view, savedInstanceState)
         //-------------------------------------------
         concatAdapter = ConcatAdapter()
+
         setObservers()
         //-------------------------------------------
         movieViewModel.getMoviePopular()
@@ -74,5 +78,22 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
 
     override fun onMovieClick(movie: Movie) {
         Log.e("Movie", "onMovieClick: $movie")
+        navController = view?.let { Navigation.findNavController(it) }!!
+        navController.navigate(
+            R.id.action_movieFragment_to_movieDetailFragment,
+            bundleOf(
+                "background" to movie.background,
+                "language" to movie.language,
+                "originalTitle" to movie.originalTitle,
+                "description" to movie.description,
+                "popularity" to movie.popularity,
+                "poster" to movie.poster,
+                "date" to movie.date,
+                "title" to movie.title,
+                "voteAverage" to movie.voteAverage,
+                "voteCount" to movie.voteCount,
+                //"realeaseDate" to movie.releaseDate
+            )
+        )
     }
 }
