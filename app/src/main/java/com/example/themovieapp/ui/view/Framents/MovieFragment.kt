@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -27,10 +28,9 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
 
     private lateinit var binding: FragmentMovieBinding
     private lateinit var navController: NavController
-    private lateinit var movieAdapter: MovieAdapter
     //---------------------------------------------
     private lateinit var concatAdapter: ConcatAdapter
-    private lateinit var moviesAdapters: MoviesAdapters
+    private var moviesAdapters: MoviesAdapters? = null
     private  val movieViewModel: MovieViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,38 +42,39 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
         super.onViewCreated(view, savedInstanceState)
         //-------------------------------------------
         concatAdapter = ConcatAdapter()
-
         setObservers()
         //-------------------------------------------
         movieViewModel.getMoviePopular()
         movieViewModel.getMovieTopRated()
         movieViewModel.getMovieUpcoming()
-        setMoviesAdapter()
     }
 
-    private fun setMoviesAdapter(){
-        binding.recyclerViewMovie.adapter = concatAdapter
-    }
-
-    fun setObservers(){
-        movieViewModel.successMoviePopular.observe(viewLifecycleOwner, { success ->
+    private fun setObservers(){
+        movieViewModel.successMoviePopular.observe(viewLifecycleOwner, { successPopular ->
             concatAdapter.apply {
-                addAdapter(0,PopularConcatAdapter(MoviesAdapters(success.response,this@MovieFragment)))
+                addAdapter(0,PopularConcatAdapter(MoviesAdapters(successPopular.response,this@MovieFragment)))
+                moviesAdapters?.submit(successPopular.response)
             }
         })
-        movieViewModel.successMovieTopRated.observe(viewLifecycleOwner, { success ->
+        movieViewModel.successMovieTopRated.observe(viewLifecycleOwner, { successRated ->
             concatAdapter.apply {
-                addAdapter(0,TopRatedConcatAdapter(MoviesAdapters(success.response, this@MovieFragment)))
+                addAdapter(0,TopRatedConcatAdapter(MoviesAdapters(successRated.response, this@MovieFragment)))
+                moviesAdapters?.submit(successRated.response)
             }
         })
-        movieViewModel.successMovieUpcoming.observe(viewLifecycleOwner, { success ->
+        movieViewModel.successMovieUpcoming.observe(viewLifecycleOwner, { successUpcoming ->
             concatAdapter.apply {
-                addAdapter(0,UpcomingConcatAdapter(MoviesAdapters(success.response,this@MovieFragment)))
+                addAdapter(0,UpcomingConcatAdapter(MoviesAdapters(successUpcoming.response,this@MovieFragment)))
+                moviesAdapters?.submit(successUpcoming.response)
             }
         })
         movieViewModel.error.observe(viewLifecycleOwner,{
             Log.e("Error","Error en lectura de peliculas")
         })
+        movieViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
+            binding.linearLayoutProgress.isVisible = isLoading
+        })
+        binding.recyclerViewMovie.adapter = concatAdapter
     }
 
     override fun onMovieClick(movie: Movie) {
@@ -92,7 +93,6 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
                 "title" to movie.title,
                 "voteAverage" to movie.voteAverage,
                 "voteCount" to movie.voteCount,
-                //"realeaseDate" to movie.releaseDate
             )
         )
     }

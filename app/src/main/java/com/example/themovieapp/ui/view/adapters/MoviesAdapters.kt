@@ -13,7 +13,7 @@ import com.example.themovieapp.utils.BaseViewHolder
 import com.example.themovieapp.utils.Constants
 
 class MoviesAdapters (
-    private val moviesList: List<Movie>,
+    private var moviesList: List<Movie>,
     private val itemClickListener: OnClickListenerMovie
     ): RecyclerView.Adapter<BaseViewHolder<*>>() {
 
@@ -48,7 +48,11 @@ class MoviesAdapters (
                 .load("${Constants.URL_IMG}${item.poster}").centerCrop()
                 .into(binding.imagenViewMovie)
         }
+    }
 
+    fun submit(list: List<Movie>) {
+        moviesList = list
+        notifyItemChanged(moviesList.size-1)
     }
 
     interface OnClickListenerMovie {
