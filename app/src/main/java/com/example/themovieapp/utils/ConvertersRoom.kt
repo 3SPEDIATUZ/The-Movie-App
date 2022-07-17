@@ -1,8 +1,7 @@
 package com.example.themovieapp.utils
 
 import androidx.room.TypeConverter
-import com.example.themovieapp.data.database.entity.MovieEntity
-import com.example.themovieapp.data.model.MovieModel
+import com.example.themovieapp.data.local.entity.MovieEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

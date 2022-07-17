@@ -1,6 +1,6 @@
 package com.example.themovieapp.di
 
-import com.example.themovieapp.data.network.ApiService
+import com.example.themovieapp.data.remote.network.MovieService
 import com.hadiyarajesh.flower.calladpater.FlowCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -51,5 +51,5 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): MovieService = retrofit.create(MovieService::class.java)
 }

@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.themovieapp.data.model.MovieModel
+import com.example.themovieapp.data.remote.model.MovieModel
 import android.widget.ImageView
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.example.themovieapp.R
 import com.example.themovieapp.databinding.ItemMovieBinding
+import com.example.themovieapp.domain.model.Movie
 import com.example.themovieapp.utils.Constants.IMAGE_URL
 
 class MovieAdapter(
@@ -20,7 +21,7 @@ class MovieAdapter(
     RecyclerView.Adapter<MovieAdapter.MainViewHolder>() {
 
     private lateinit var recyclerView: RecyclerView
-    private var movieModels: List<MovieModel> = ArrayList()
+    private var movieModels: List<Movie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
@@ -50,16 +51,16 @@ class MovieAdapter(
 
     override fun getItemCount(): Int = movieModels.size
 
-    fun submitList(itemList: List<MovieModel>) {
+    fun submitList(itemList: List<Movie>) {
         movieModels = itemList
         notifyItemChanged(movieModels.size - 1)
     }
 
     class MainViewHolder(private var binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movieModel: MovieModel, context: Context) {
+        fun bind(movie: Movie, context: Context) {
             val imageRequest = ImageRequest.Builder(context)
-                .data("$IMAGE_URL${movieModel.poster}")
+                .data("$IMAGE_URL${movie.poster}")
                 .crossfade(true)
                 .size(1280, 720)
                 .target(
@@ -78,11 +79,11 @@ class MovieAdapter(
                 )
                 .build()
             context.imageLoader.enqueue(imageRequest)
-            binding.textViewTitle.text = movieModel.title
+            binding.textViewTitle.text = movie.title
         }
     }
 
     interface RecyclerViewHomeClickListener {
-        fun clickOnItem(data: MovieModel, card: View)
+        fun clickOnItem(data: Movie, card: View)
     }
 }

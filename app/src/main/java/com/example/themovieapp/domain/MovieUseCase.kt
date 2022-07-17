@@ -1,16 +1,12 @@
 package com.example.themovieapp.domain
 
-import com.example.themovieapp.data.database.entity.toDatabase
-import com.example.themovieapp.data.dto.mapper.MovieDTOMapper
+import com.example.themovieapp.data.local.entity.MovieEntityResponse
+import com.example.themovieapp.data.local.entity.listMovieToListEntity
+import com.example.themovieapp.data.remote.response.MovieModelResponse
 import com.example.themovieapp.data.repository.MovieRepository
-import com.example.themovieapp.data.response.MovieModelResponse
 import com.example.themovieapp.di.IoDispatcher
 import com.example.themovieapp.domain.model.Movie
-import com.hadiyarajesh.flower.Resource
-import com.hadiyarajesh.flower.networkBoundResource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
@@ -19,22 +15,18 @@ class MovieUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): List<Movie> {
-       val movies = movieRepository.getAllMoviesFromRetrofit()
+        val movies = movieRepository.getAllMoviesFromRetrofit()
 
-        return if(movies.isNotEmpty()) {
+        return if (movies.isNotEmpty()) {
             movieRepository.clearMovies()
-            movieRepository.insertMovies()
+            movieRepository.insertAllMovies(movies.listMovieToListEntity())
+          //  movieRepository.insertMovie(movies.Hola())
             movies
         } else {
             movieRepository.getAllMoviesFromRoom()
         }
     }
 }
-
-/*val response = movieDao.getAllMovies()
-        val movieEntity = response.movieEntity
-        val mapper = MovieDTOMapper()
-       return mapper.mapMovieEntityList(movieEntity)*/
 
 /* return networkBoundResource(
             fetchFromLocal = { movieRepository.getAllMoviesFromRoom() },  //Extrae datos de la base de datos local (Room)

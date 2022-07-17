@@ -1,42 +1,41 @@
 package com.example.themovieapp.data.repository
 
-import com.example.themovieapp.data.database.dao.MovieDao
-import com.example.themovieapp.data.database.entity.MovieEntity
-import com.example.themovieapp.data.database.entity.MovieEntityResponse
-import com.example.themovieapp.data.dto.mapper.MovieDTOMapper
-import com.example.themovieapp.data.model.MovieModel
-import com.example.themovieapp.data.network.MovieService
-import com.example.themovieapp.data.response.MovieModelResponse
+import com.example.themovieapp.data.local.dao.MovieDao
+import com.example.themovieapp.data.local.entity.MovieEntity
+import com.example.themovieapp.data.local.entity.MovieEntityResponse
+import com.example.themovieapp.data.remote.network.MovieRemoteDataSource
+import com.example.themovieapp.data.remote.network.MovieRemoteDataSourceImpl
+import com.example.themovieapp.data.remote.response.MovieModelResponse
 import com.example.themovieapp.domain.model.Movie
-import com.example.themovieapp.domain.model.toDomain
+import com.example.themovieapp.domain.model.listMovieEntityToListMovie
+import com.example.themovieapp.domain.model.listMovieModelToListMovie
 import com.example.themovieapp.utils.Constants
-import com.hadiyarajesh.flower.ApiResponse
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
-    private val movieService: MovieService,
-    private val movieDao: MovieDao
+    private val movieRemoteDataSource: MovieRemoteDataSource,
+    private val localDataSource: MovieDao
 ) : MovieRepository {
 
     override suspend fun getAllMoviesFromRetrofit(): List<Movie> {
-       return movieService.getMovies(Constants.API_KEY)
+        val movieModelResponse = movieRemoteDataSource.getMovies(Constants.API_KEY)
+       return movieModelResponse.listMovieModelToListMovie()
     }
 
     override suspend fun getAllMoviesFromRoom(): List<Movie> {
-        val response = movieDao.getAllMovies()
-        val movieEntity = response.movieEntity
-        val mapper = MovieDTOMapper()
-       return mapper.mapMovieEntityList(movieEntity)
+        val movieResponseLocal = localDataSource.getAllMovies()
+        return movieResponseLocal.listMovieEntityToListMovie()
     }
 
-    override suspend fun insertMovies(movies: MovieEntityResponse) {
-        val response = movies.movieEntity
-        val mapper = MovieDTOMapper()
-        movieDao.insertAll(mapper.mapMovieEntityList(response))
+    override suspend fun insertAllMovies(movies: List<MovieEntity>) {
+        localDataSource.insertAll(movies)
+    }
+
+    override suspend fun insertMovie(movie: MovieEntity) {
+        localDataSource.saveMovie(movie)
     }
 
     override suspend fun clearMovies() {
-        movieDao.deleteAllMovies()
+        localDataSource.deleteAllMovies()
     }
 }
