@@ -12,13 +12,13 @@ import com.example.themovieapp.data.remote.response.MovieModelResponse
 interface MovieDao {
 
     @Query("SELECT * FROM movie_table ORDER BY id DESC")
-    fun getAllMovies(): List<MovieEntity>
+    suspend fun getAllMovies(): List<MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(movies: List<MovieEntity>)
+    suspend fun saveMovies(movies: MovieEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMovie(movie: MovieEntity)
+    suspend fun insertAll(quotes:List<MovieEntity>)
 
     @Query("DELETE FROM movie_table")
     suspend fun deleteAllMovies()

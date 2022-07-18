@@ -7,14 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.themovieapp.data.local.entity.movieToMovieEntity
 import com.example.themovieapp.data.remote.model.MovieModel
 import com.example.themovieapp.databinding.FragmentMovieBinding
 import com.example.themovieapp.domain.model.Movie
+import com.example.themovieapp.domain.model.listMovieModelToListMovie
 import com.example.themovieapp.ui.view.adapter.MovieAdapter
 import com.example.themovieapp.ui.viewModel.MovieViewModel
+import com.example.themovieapp.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
@@ -32,7 +36,7 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setMainAdapter()
-        movieViewModel.getMovies()
+        movieViewModel.onMovies()
         setObservers()
     }
 
@@ -43,8 +47,15 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     }
 
     private fun setObservers() {
-        movieViewModel.quoteModel.observe(viewLifecycleOwner, {
-           movieAdapter.submitList(it)
+        movieViewModel.movie.observe(viewLifecycleOwner, { movieResponse ->
+           when(movieResponse) {
+               is Result.Success -> {
+                   movieAdapter.submitList(movieResponse.data.movieModels.listMovieModelToListMovie())
+               }
+               is Result.Error -> {
+                   Log.e("Hola", "Aqui esta")
+               }
+           }
         })
     }
 

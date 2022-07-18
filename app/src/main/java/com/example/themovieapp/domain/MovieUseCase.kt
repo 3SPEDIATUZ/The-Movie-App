@@ -1,12 +1,16 @@
 package com.example.themovieapp.domain
 
-import com.example.themovieapp.data.local.entity.MovieEntityResponse
-import com.example.themovieapp.data.local.entity.listMovieToListEntity
+import com.example.themovieapp.data.local.entity.movieEntityToMovieModel
+import com.example.themovieapp.data.local.entity.movieToMovieEntity
+import com.example.themovieapp.data.remote.model.movieToMovieModel
 import com.example.themovieapp.data.remote.response.MovieModelResponse
 import com.example.themovieapp.data.repository.MovieRepository
 import com.example.themovieapp.di.IoDispatcher
-import com.example.themovieapp.domain.model.Movie
+import com.example.themovieapp.domain.model.movieEntityToMovie
+import com.example.themovieapp.domain.model.movieModelToMovie
+import com.example.themovieapp.utils.InternetCheck
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(
@@ -14,16 +18,15 @@ class MovieUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(): List<Movie> {
-        val movies = movieRepository.getAllMoviesFromRetrofit()
-
-        return if (movies.isNotEmpty()) {
-            movieRepository.clearMovies()
-            movieRepository.insertAllMovies(movies.listMovieToListEntity())
-          //  movieRepository.insertMovie(movies.Hola())
-            movies
+    suspend fun getAllMovies(): MovieModelResponse = withContext(ioDispatcher) {
+        if (InternetCheck.isNetworkAvailable()) {
+            movieRepository.getAllMoviesFromRemote().movieModels.map { movies ->
+           //     movieRepository.insert(movies)
+                movieRepository.saveAllMovies(movies.movieEntityToMovieModel())
+            }
+            movieRepository.getAllMoviesFromLocal()
         } else {
-            movieRepository.getAllMoviesFromRoom()
+            movieRepository.getAllMoviesFromLocal()
         }
     }
 }

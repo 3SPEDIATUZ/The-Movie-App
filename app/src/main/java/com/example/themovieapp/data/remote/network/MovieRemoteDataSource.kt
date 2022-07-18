@@ -5,5 +5,5 @@ import com.example.themovieapp.data.remote.response.MovieModelResponse
 
 interface MovieRemoteDataSource {
 
-    suspend fun getMovies(apiKey: String): List<MovieModel>
+    suspend fun getMoviesFromApi(apiKey: String): MovieModelResponse
 }
