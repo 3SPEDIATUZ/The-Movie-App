@@ -8,5 +8,6 @@ import javax.inject.Inject
 
 class MovieRemoteDataSourceImpl @Inject constructor(private val movieService: MovieService): MovieRemoteDataSource {
 
-    override suspend fun getMoviesFromApi(apiKey: String): MovieModelResponse = movieService.getMovies(apiKey)
+    override suspend fun getMoviesFromApi(apiKey: String): List<MovieModel> = movieService.getMovies(apiKey).movieModels
+    //override suspend fun getMoviesFromApi(apiKey: String): List<MovieModel> = movieService.getMovies(apiKey).movieModels
 }

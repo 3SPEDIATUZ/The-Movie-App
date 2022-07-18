@@ -5,13 +5,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.themovieapp.data.local.entity.MovieEntity
-import com.example.themovieapp.data.local.entity.MovieEntityResponse
-import com.example.themovieapp.data.remote.response.MovieModelResponse
 
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM movie_table ORDER BY id DESC")
+    @Query("SELECT * FROM movie_table ORDER BY id ASC")
     suspend fun getAllMovies(): List<MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

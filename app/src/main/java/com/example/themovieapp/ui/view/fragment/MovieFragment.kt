@@ -48,6 +48,19 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
 
     private fun setObservers() {
         movieViewModel.movie.observe(viewLifecycleOwner, { movieResponse ->
+            when(movieResponse) {
+                is Result.Success -> {
+                    lifecycleScope.launch { movieAdapter.submitList(movieResponse.data) }
+
+                }
+                is Result.Error -> {
+                    Log.e("Hola", "Aqui esta")
+                }
+            }
+        })
+    }
+    /*private fun setObservers() {
+        movieViewModel.movie.observe(viewLifecycleOwner, { movieResponse ->
            when(movieResponse) {
                is Result.Success -> {
                    movieAdapter.submitList(movieResponse.data.movieModels.listMovieModelToListMovie())
@@ -57,7 +70,20 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
                }
            }
         })
-    }
+    }*/
+
+    /*private fun setObservers() {
+        movieViewModel.movie.observe(viewLifecycleOwner, { movieResponse ->
+           when(movieResponse) {
+               is Result.Success -> {
+                   movieAdapter.submitList(movieResponse.data)
+               }
+               is Result.Error -> {
+                   Log.e("Hola", "Aqui esta")
+               }
+           }
+        })
+    }*/
 
     override fun clickOnItem(data: Movie, card: View) {}
 }

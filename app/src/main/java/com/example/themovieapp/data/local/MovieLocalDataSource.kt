@@ -8,9 +8,18 @@ import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) {
 
+    suspend fun getAllMovies(): List<MovieEntity> {
+        return movieDao.getAllMovies()
+    }
+
+
+    /*suspend fun getAllMovies(): List<MovieEntity> {
+        return movieDao.getAllMovies()
+    }
+
     suspend fun getAllMovies(): MovieModelResponse {
         return movieDao.getAllMovies().movieEntityToMovieModelResponse()
-    }
+    }*/
 
     suspend fun saveMovies(movies: MovieEntity) {
         movieDao.saveMovies(movies)

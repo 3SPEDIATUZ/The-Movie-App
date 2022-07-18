@@ -6,6 +6,8 @@ import com.example.themovieapp.data.remote.model.movieToMovieModel
 import com.example.themovieapp.data.remote.response.MovieModelResponse
 import com.example.themovieapp.data.repository.MovieRepository
 import com.example.themovieapp.di.IoDispatcher
+import com.example.themovieapp.domain.model.Movie
+import com.example.themovieapp.domain.model.listMovieModelToListMovie
 import com.example.themovieapp.domain.model.movieEntityToMovie
 import com.example.themovieapp.domain.model.movieModelToMovie
 import com.example.themovieapp.utils.InternetCheck
@@ -18,11 +20,13 @@ class MovieUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun getAllMovies(): MovieModelResponse = withContext(ioDispatcher) {
+    suspend fun getAllMovies(): List<Movie> = withContext(ioDispatcher) {
+        val movie = movieRepository.getAllMoviesFromRemote()
         if (InternetCheck.isNetworkAvailable()) {
-            movieRepository.getAllMoviesFromRemote().movieModels.map { movies ->
-           //     movieRepository.insert(movies)
-                movieRepository.saveAllMovies(movies.movieEntityToMovieModel())
+            if (movie.isNotEmpty()) {
+                movieRepository.clearMovies()
+                //movieRepository.insert(movie.map { it.movieEntityToMovieModel() })
+                movie.map { movieRepository.saveAllMovies(it.movieToMovieEntity()) }
             }
             movieRepository.getAllMoviesFromLocal()
         } else {
@@ -30,6 +34,21 @@ class MovieUseCase @Inject constructor(
         }
     }
 }
+
+/*suspend fun getAllMovies(): List<Movie> = withContext(ioDispatcher) {
+        val movie = movieRepository.getAllMoviesFromRemote()
+        if (InternetCheck.isNetworkAvailable()) {
+            if (movie.isNotEmpty()) {
+                movieRepository.clearMovies()
+                //movieRepository.insert(movie.map { it.movieEntityToMovieModel() })
+                movie.map { movieRepository.saveAllMovies(it.movieToMovieEntity()) }
+            }
+            movieRepository.getAllMoviesFromLocal()
+        } else {
+            movieRepository.clearMovies()
+            movieRepository.getAllMoviesFromLocal()
+        }
+    }*/
 
 /* return networkBoundResource(
             fetchFromLocal = { movieRepository.getAllMoviesFromRoom() },  //Extrae datos de la base de datos local (Room)

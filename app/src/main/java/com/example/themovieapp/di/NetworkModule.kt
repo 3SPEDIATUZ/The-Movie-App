@@ -2,6 +2,7 @@ package com.example.themovieapp.di
 
 import com.example.themovieapp.data.remote.network.MovieService
 import com.hadiyarajesh.flower.calladpater.FlowCallAdapterFactory
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,8 +34,8 @@ object NetworkModule {
         return OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            /*.readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)*/
             .build()
     }
 
@@ -44,7 +45,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
-            .addCallAdapterFactory(FlowCallAdapterFactory.create())
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .client(okHttpClient)
             .build()
     }

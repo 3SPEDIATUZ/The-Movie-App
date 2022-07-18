@@ -13,6 +13,8 @@ import com.example.themovieapp.R
 import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.domain.model.Movie
 import com.example.themovieapp.utils.Constants.IMAGE_URL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MovieAdapter(
     private val recyclerViewHome: RecyclerViewHomeClickListener,
@@ -51,9 +53,9 @@ class MovieAdapter(
 
     override fun getItemCount(): Int = movieModels.size
 
-    fun submitList(itemList: List<Movie>) {
+    suspend fun submitList(itemList: List<Movie>) = withContext(Dispatchers.Main) {
         movieModels = itemList
-        notifyItemChanged(movieModels.size - 1)
+        notifyItemInserted(movieModels.size - 1)
     }
 
     class MainViewHolder(private var binding: ItemMovieBinding) :
