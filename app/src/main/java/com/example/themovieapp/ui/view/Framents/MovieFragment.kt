@@ -42,11 +42,13 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
         super.onViewCreated(view, savedInstanceState)
         //-------------------------------------------
         concatAdapter = ConcatAdapter()
+        //-------------------------------------------
         setObservers()
         //-------------------------------------------
         movieViewModel.getMoviePopular()
         movieViewModel.getMovieTopRated()
         movieViewModel.getMovieUpcoming()
+        //-------------------------------------------
     }
 
     private fun setObservers(){
