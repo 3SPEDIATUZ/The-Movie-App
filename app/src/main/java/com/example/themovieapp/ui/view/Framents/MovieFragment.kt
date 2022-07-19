@@ -13,9 +13,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ConcatAdapter
 import com.example.themovieapp.R
-import com.example.themovieapp.data.model.Movie
+import com.example.themovieapp.data.remote.model.MovieModel
 import com.example.themovieapp.databinding.FragmentMovieBinding
-import com.example.themovieapp.ui.view.adapters.MovieAdapter
 import com.example.themovieapp.ui.view.adapters.MoviesAdapters
 import com.example.themovieapp.ui.view.adapters.concat.PopularConcatAdapter
 import com.example.themovieapp.ui.view.adapters.concat.TopRatedConcatAdapter
@@ -79,22 +78,22 @@ class MovieFragment : Fragment(), MoviesAdapters.OnClickListenerMovie {
         binding.recyclerViewMovie.adapter = concatAdapter
     }
 
-    override fun onMovieClick(movie: Movie) {
-        Log.e("Movie", "onMovieClick: $movie")
+    override fun onMovieClick(movieModel: MovieModel) {
+        Log.e("MovieModel", "onMovieClick: $movieModel")
         navController = view?.let { Navigation.findNavController(it) }!!
         navController.navigate(
             R.id.action_movieFragment_to_movieDetailFragment,
             bundleOf(
-                "background" to movie.background,
-                "language" to movie.language,
-                "originalTitle" to movie.originalTitle,
-                "description" to movie.description,
-                "popularity" to movie.popularity,
-                "poster" to movie.poster,
-                "date" to movie.date,
-                "title" to movie.title,
-                "voteAverage" to movie.voteAverage,
-                "voteCount" to movie.voteCount,
+                "background" to movieModel.background,
+                "language" to movieModel.language,
+                "originalTitle" to movieModel.originalTitle,
+                "description" to movieModel.description,
+                "popularity" to movieModel.popularity,
+                "poster" to movieModel.poster,
+                "date" to movieModel.date,
+                "title" to movieModel.title,
+                "voteAverage" to movieModel.voteAverage,
+                "voteCount" to movieModel.voteCount,
             )
         )
     }

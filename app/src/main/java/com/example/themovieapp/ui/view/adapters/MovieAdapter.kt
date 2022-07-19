@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.themovieapp.R
-import com.example.themovieapp.data.model.Movie
+import com.example.themovieapp.data.remote.model.MovieModel
 import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.utils.Constants.URL_IMG
 
 class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.Adapter<MovieAdapter.MainHolder>() {
 
-    private var itemMovie: List<Movie> = ArrayList()
+    private var itemMovieModel: List<MovieModel> = ArrayList()
     private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -23,7 +23,7 @@ class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val movie = itemMovie[position]
+        val movie = itemMovieModel[position]
         with(holder) {
             holder.bind(movie)
 
@@ -37,24 +37,24 @@ class MovieAdapter(private val onClickListener: OnClickListener) :RecyclerView.A
         return super.getItemViewType(position)
     }
 
-    fun submit(list: List<Movie>){
-        itemMovie = list
-        notifyItemChanged(itemMovie.size-1)
+    fun submit(list: List<MovieModel>){
+        itemMovieModel = list
+        notifyItemChanged(itemMovieModel.size-1)
     }
 
-    override fun getItemCount(): Int = itemMovie.size
+    override fun getItemCount(): Int = itemMovieModel.size
 
     inner class MainHolder(view: View) :
         RecyclerView.ViewHolder(view) {
          val itemMovieBinding = ItemMovieBinding.bind(view)
-        fun bind(movie: Movie) {
+        fun bind(movieModel: MovieModel) {
             itemMovieBinding.root.setOnClickListener {
-                onClickListener.onClick(movie)
+                onClickListener.onClick(movieModel)
             }
         }
     }
 
     interface OnClickListener {
-        fun onClick(movie: Movie)
+        fun onClick(movieModel: MovieModel)
     }
 }

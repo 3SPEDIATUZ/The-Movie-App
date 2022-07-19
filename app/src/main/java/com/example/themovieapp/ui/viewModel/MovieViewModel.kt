@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.themovieapp.data.model.MovieResponse
+import com.example.themovieapp.data.remote.model.MovieResponse
 import com.example.themovieapp.data.repository.MovieRepository
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onFailure

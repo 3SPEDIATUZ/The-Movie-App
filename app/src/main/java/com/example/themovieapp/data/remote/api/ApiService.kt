@@ -1,6 +1,6 @@
-package com.example.themovieapp.data.api
+package com.example.themovieapp.data.remote.api
 
-import com.example.themovieapp.data.model.MovieResponse
+import com.example.themovieapp.data.remote.model.MovieResponse
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Query

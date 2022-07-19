@@ -1,9 +1,9 @@
-package com.example.themovieapp.data.model
+package com.example.themovieapp.data.remote.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
-data class Movie(
+
+data class MovieModel(
     @SerializedName("backdrop_path") val background: String,
     @SerializedName("id") val identification: Int,
     @SerializedName("original_language") val language: String,

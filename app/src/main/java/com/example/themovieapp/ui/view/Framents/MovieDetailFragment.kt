@@ -1,15 +1,12 @@
 package com.example.themovieapp.ui.view.Framents
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.example.themovieapp.R
-import com.example.themovieapp.data.model.Movie
 import com.example.themovieapp.databinding.FragmentMovieDetailBinding
 import com.example.themovieapp.ui.viewModel.MovieDetailViewModel
 import com.example.themovieapp.utils.Constants

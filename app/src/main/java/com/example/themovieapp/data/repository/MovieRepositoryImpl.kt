@@ -1,7 +1,7 @@
 package com.example.themovieapp.data.repository
 
-import com.example.themovieapp.data.api.ApiService
-import com.example.themovieapp.data.model.MovieResponse
+import com.example.themovieapp.data.remote.api.ApiService
+import com.example.themovieapp.data.remote.model.MovieResponse
 import com.example.themovieapp.di.IoDispatcher
 import com.example.themovieapp.utils.Constants
 import com.skydoves.sandwich.ApiResponse

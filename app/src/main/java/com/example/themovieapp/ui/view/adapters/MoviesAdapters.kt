@@ -3,17 +3,16 @@ package com.example.themovieapp.ui.view.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.themovieapp.data.model.Movie
+import com.example.themovieapp.data.remote.model.MovieModel
 import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.utils.BaseViewHolder
 import com.example.themovieapp.utils.Constants
 
 class MoviesAdapters (
-    private var moviesList: List<Movie>,
+    private var moviesList: List<MovieModel>,
     private val itemClickListener: OnClickListenerMovie
     ): RecyclerView.Adapter<BaseViewHolder<*>>() {
 
@@ -42,20 +41,20 @@ class MoviesAdapters (
     override fun getItemCount(): Int = moviesList.size
 
     private inner class MoviesHolder(val binding: ItemMovieBinding) :
-        BaseViewHolder<Movie>(binding.root) {
-        override fun bind(item: Movie) {
+        BaseViewHolder<MovieModel>(binding.root) {
+        override fun bind(item: MovieModel) {
             Glide.with(context)
                 .load("${Constants.URL_IMG}${item.poster}").centerCrop()
                 .into(binding.imagenViewMovie)
         }
     }
 
-    fun submit(list: List<Movie>) {
+    fun submit(list: List<MovieModel>) {
         moviesList = list
         notifyItemChanged(moviesList.size-1)
     }
 
     interface OnClickListenerMovie {
-        fun onMovieClick(movie: Movie)
+        fun onMovieClick(movieModel: MovieModel)
     }
 }
