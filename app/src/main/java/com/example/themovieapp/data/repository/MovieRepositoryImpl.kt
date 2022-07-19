@@ -1,5 +1,6 @@
 package com.example.themovieapp.data.repository
 
+import com.example.themovieapp.data.local.MovieLocalDataSource
 import com.example.themovieapp.data.remote.api.ApiService
 import com.example.themovieapp.data.remote.model.MovieResponse
 import com.example.themovieapp.di.IoDispatcher
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val movieLocal: MovieLocalDataSource
 ) : MovieRepository {
 
     override suspend fun getMoviesPopular(): ApiResponse<MovieResponse> = withContext(ioDispatcher) {
