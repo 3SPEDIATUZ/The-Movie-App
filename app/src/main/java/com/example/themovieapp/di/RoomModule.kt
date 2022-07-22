@@ -2,7 +2,7 @@ package com.example.themovieapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.themovieapp.data.local.MovieDatabase
+import com.example.themovieapp.data.datasource.local.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

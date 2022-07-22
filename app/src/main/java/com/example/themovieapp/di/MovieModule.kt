@@ -1,7 +1,7 @@
 package com.example.themovieapp.di
 
-import com.example.themovieapp.data.remote.network.MovieRemoteDataSource
-import com.example.themovieapp.data.remote.network.MovieRemoteDataSourceImpl
+import com.example.themovieapp.data.datasource.remote.network.BaseDataSource
+import com.example.themovieapp.data.datasource.remote.network.MovieRemoteDataSource
 import com.example.themovieapp.data.repository.MovieRepository
 import com.example.themovieapp.data.repository.MovieRepositoryImpl
 import dagger.Module
@@ -20,5 +20,5 @@ object MovieModule {
 
     @Singleton
     @Provides
-    fun provideRemoteDataSource(movieRemoteDataSourceImpl: MovieRemoteDataSourceImpl): MovieRemoteDataSource = movieRemoteDataSourceImpl
+    fun provideRemoteDataSource(movieRemoteDataSource: MovieRemoteDataSource): BaseDataSource = movieRemoteDataSource
 }

@@ -1,14 +1,13 @@
-package com.example.themovieapp.data.local
+package com.example.themovieapp.data.datasource.local
 
-import com.example.themovieapp.data.local.dao.MovieDao
-import com.example.themovieapp.data.local.entity.MovieEntity
-import com.example.themovieapp.data.remote.response.MovieModelResponse
-import com.example.themovieapp.data.remote.response.movieEntityToMovieModelResponse
+import androidx.lifecycle.LiveData
+import com.example.themovieapp.data.datasource.local.dao.MovieDao
+import com.example.themovieapp.data.datasource.local.entity.MovieEntity
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) {
 
-    suspend fun getAllMovies(): List<MovieEntity> {
+    fun getAllMovies(): LiveData<List<MovieEntity>> {
         return movieDao.getAllMovies()
     }
 
@@ -22,7 +21,7 @@ class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) {
     }*/
 
     suspend fun saveMovies(movies: MovieEntity) {
-        movieDao.saveMovies(movies)
+        movieDao.insert(movies)
     }
 
     suspend fun insertMovies(movies: List<MovieEntity>) {

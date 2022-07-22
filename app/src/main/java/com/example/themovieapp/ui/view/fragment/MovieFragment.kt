@@ -6,16 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.themovieapp.data.local.entity.movieToMovieEntity
-import com.example.themovieapp.data.remote.model.MovieModel
 import com.example.themovieapp.databinding.FragmentMovieBinding
 import com.example.themovieapp.domain.model.Movie
-import com.example.themovieapp.domain.model.listMovieModelToListMovie
+import com.example.themovieapp.domain.model.listMovieEntityToListMovie
 import com.example.themovieapp.ui.view.adapter.MovieAdapter
 import com.example.themovieapp.ui.viewModel.MovieViewModel
+import com.example.themovieapp.utils.Resource
 import com.example.themovieapp.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -36,7 +37,7 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setMainAdapter()
-        movieViewModel.onMovies()
+       // movieViewModel.onMovies()
         setObservers()
     }
 
@@ -47,17 +48,21 @@ class MovieFragment : Fragment(), MovieAdapter.RecyclerViewHomeClickListener {
     }
 
     private fun setObservers() {
-        movieViewModel.movie.observe(viewLifecycleOwner, { movieResponse ->
-            when(movieResponse) {
-                is Result.Success -> {
-                    lifecycleScope.launch { movieAdapter.submitList(movieResponse.data) }
+        movieViewModel.movies.observe(viewLifecycleOwner, { movieResponse ->
+            when (movieResponse.status) {
+                Resource.Status.SUCCESS -> {
+                    lifecycleScope.launch {
+                        if (!movieResponse.data.isNullOrEmpty()) movieAdapter.submitList(movieResponse.data.listMovieEntityToListMovie())
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    Toast.makeText(requireContext(), movieResponse.message, Toast.LENGTH_SHORT).show()
+                }
+                Resource.Status.LOADING -> {
 
-                }
-                is Result.Error -> {
-                    Log.e("Hola", "Aqui esta")
-                }
             }
-        })
+        }
+    })
     }
     /*private fun setObservers() {
         movieViewModel.movie.observe(viewLifecycleOwner, { movieResponse ->

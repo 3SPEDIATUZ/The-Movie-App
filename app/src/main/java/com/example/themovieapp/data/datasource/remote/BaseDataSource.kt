@@ -1,4 +1,4 @@
-package com.example.themovieapp.data.remote
+package com.example.themovieapp.data.datasource.remote
 
 import com.example.themovieapp.utils.Resource
 import retrofit2.Response

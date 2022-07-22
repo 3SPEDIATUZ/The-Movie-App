@@ -4,15 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.themovieapp.data.local.entity.movieToMovieEntity
-import com.example.themovieapp.data.remote.response.MovieModelResponse
 import com.example.themovieapp.domain.MovieUseCase
 import com.example.themovieapp.domain.model.Movie
 import com.example.themovieapp.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +18,9 @@ class MovieViewModel @Inject constructor(private val movieUseCase: MovieUseCase)
     val movie: LiveData<Result<List<Movie>>>
         get() = _movie
 
-    fun onMovies() {
+    val movies = movieUseCase.getAllMovies()
+}
+/*fun onMovies() {
         viewModelScope.launch {
             val movies = movieUseCase.getAllMovies()
             try {
@@ -31,8 +29,7 @@ class MovieViewModel @Inject constructor(private val movieUseCase: MovieUseCase)
                 _movie.postValue(Result.Error(exception))
             }
         }
-    }
-}
+    }*/
 
 /*private val _movie = MutableLiveData<Result<MovieModelResponse>>()
     val movie: LiveData<Result<MovieModelResponse>>

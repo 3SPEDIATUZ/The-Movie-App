@@ -1,13 +1,15 @@
 package com.example.themovieapp.data.repository
 
-import com.example.themovieapp.data.local.entity.MovieEntity
-import com.example.themovieapp.data.remote.response.MovieModelResponse
+import androidx.lifecycle.LiveData
+import com.example.themovieapp.data.datasource.local.entity.MovieEntity
+import com.example.themovieapp.data.datasource.remote.response.MovieModelResponse
 import com.example.themovieapp.domain.model.Movie
+import com.example.themovieapp.utils.Resource
 
 interface MovieRepository {
 
-    suspend fun getAllMoviesFromRemote(): List<Movie>
-    suspend fun getAllMoviesFromLocal(): List<Movie>
+    suspend fun getAllMoviesFromRemote(): Resource<MovieModelResponse>
+     fun getAllMoviesFromLocal(): LiveData<List<MovieEntity>>
     suspend fun saveAllMovies(movieEntity: MovieEntity)
     suspend fun insert(movieEntity: List<MovieEntity>)
     suspend fun clearMovies()

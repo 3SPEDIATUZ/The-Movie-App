@@ -1,16 +1,13 @@
 package com.example.themovieapp.domain
 
-import com.example.themovieapp.data.local.entity.movieEntityToMovieModel
-import com.example.themovieapp.data.local.entity.movieToMovieEntity
-import com.example.themovieapp.data.remote.model.movieToMovieModel
-import com.example.themovieapp.data.remote.response.MovieModelResponse
+import com.example.themovieapp.data.datasource.local.entity.movieEntityToMovieModel
+import com.example.themovieapp.data.datasource.local.entity.movieToMovieEntity
 import com.example.themovieapp.data.repository.MovieRepository
 import com.example.themovieapp.di.IoDispatcher
 import com.example.themovieapp.domain.model.Movie
-import com.example.themovieapp.domain.model.listMovieModelToListMovie
-import com.example.themovieapp.domain.model.movieEntityToMovie
-import com.example.themovieapp.domain.model.movieModelToMovie
+import com.example.themovieapp.domain.model.listMovieModelToListMovieEntity
 import com.example.themovieapp.utils.InternetCheck
+import com.example.themovieapp.utils.performGetOperation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,7 +17,13 @@ class MovieUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun getAllMovies(): List<Movie> = withContext(ioDispatcher) {
+    fun getAllMovies() = performGetOperation(
+        databaseQuery = { movieRepository.getAllMoviesFromLocal() },
+        networkCall = { movieRepository.getAllMoviesFromRemote() },
+        saveCallResult = { movieRepository.insert(it.movieModels.listMovieModelToListMovieEntity()) })
+}
+
+/*suspend fun getAllMovies(): List<Movie> = withContext(ioDispatcher) {
         val movie = movieRepository.getAllMoviesFromRemote()
         if (InternetCheck.isNetworkAvailable()) {
             if (movie.isNotEmpty()) {
@@ -32,8 +35,7 @@ class MovieUseCase @Inject constructor(
         } else {
             movieRepository.getAllMoviesFromLocal()
         }
-    }
-}
+    }*/
 
 /*suspend fun getAllMovies(): List<Movie> = withContext(ioDispatcher) {
         val movie = movieRepository.getAllMoviesFromRemote()

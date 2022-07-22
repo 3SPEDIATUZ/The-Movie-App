@@ -1,7 +1,7 @@
 package com.example.themovieapp.di
 
-import com.example.themovieapp.data.remote.network.MovieService
-import com.hadiyarajesh.flower.calladpater.FlowCallAdapterFactory
+import com.example.themovieapp.data.datasource.remote.network.MovieService
+import com.example.themovieapp.utils.Constants.BASE_URL
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -18,8 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://api.themoviedb.org/"
-
     //Proveede los modulo en los metodos.
     @Singleton
     @Provides
@@ -34,8 +32,8 @@ object NetworkModule {
         return OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
-            /*.readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)*/
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.themovieapp.data.remote.model.MovieModel
 import android.widget.ImageView
 import coil.imageLoader
 import coil.request.ImageRequest
