@@ -1,6 +1,7 @@
 package com.example.themovieapp.di
 
 import com.example.themovieapp.data.remote.api.ApiService
+import com.example.themovieapp.utils.Constants
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -16,7 +17,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://api.themoviedb.org/"
+    //private const val BASE_URL = "https://api.themoviedb.org/"
 
     //Proveede los modulo en los metodos.
     @Singleton
@@ -40,7 +41,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .client(okHttpClient)
             .build()
